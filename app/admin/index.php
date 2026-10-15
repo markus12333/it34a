@@ -1,6 +1,5 @@
 <?php 
 require_once '../../config/config.php';
-require_once '../../config/functions.php';
 
 
 requireRole('admin');
@@ -38,7 +37,7 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
     <h1>Hello Admin</h1>
-    <a href="../auth/signout.php">Sign Out</a>
+ <a href="<?= BASE_URL ?>/auth/signout.php">Sign Out</a>
 
 
     <table border="1">

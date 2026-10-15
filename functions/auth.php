@@ -1,11 +1,7 @@
+
 <?php
 
-function redirect($path){
-    header("Location: " . BASE_URL . $path);
-    exit;
-}
-
-function loginUser($pdo, $login, $password){
+function loginUser($pdo,$login,$password){
 //Application query #2
 
 $sql = "
@@ -33,15 +29,27 @@ if(!$user){
 if(!password_verify($password, $user['user_password'])){
     return false;
 }
+
+//check if user already has an active session
+if(hasActiveUserSession($pdo, $user['user_id'])){
+    return 'active_session';
+
+}
+
+
+//SESSION variables
 $_SESSION['user_id']=$user['user_id'];
 $_SESSION['user_email']=$user['user_email'];
 $_SESSION['user_username']=$user['user_username'];
 $_SESSION['user_role']=$user['user_role'];
 
+
+// initial database session
+
+$_SESSION['session_id'] = startUserSession($pdo);
 return true;
-
-
 }
+
 
 function requireLogin(){
 if(!isset($_SESSION['user_id'])){
